@@ -7,13 +7,13 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.PWMVictorSPX;
-import edu.wpi.first.wpilibj.SpeedController;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
-  private static SpeedController m_intake = new PWMVictorSPX(Constants.kIntake);
+  private static WPI_VictorSPX m_intake = new WPI_VictorSPX(Constants.kIntake);
 
   /**
    * Drives the intake motor forward or backward with triggers
