@@ -38,8 +38,12 @@ public class DriveTrain extends SubsystemBase {
 
   public void tankDrive(XboxController driver) {
     double move = driver.getRawAxis(0);
-    double turn = driver.getRawAxis(1);
-    dt.arcadeDrive(move, turn);
+    double rotation = driver.getRawAxis(1);
+    dt.arcadeDrive(move, rotation);
+  }
+
+  public void drive(double s, double r) {
+    dt.arcadeDrive(s, r);
   }
 
   @Override

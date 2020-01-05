@@ -21,6 +21,12 @@ public final class Constants {
     public static final int REAR_LEFT_MOTOR = 2;
     public static final int REAR_RIGHT_MOTOR = 3;
 
+    public static final int ARM_MOTOR = 4;
+    public static final int WINCH_MOTOR = 5;
+    public static final int INTAKE_MOTOR = 6;
+    public static final int SHOOTER_MOTOR = 7;
+    public static final int ROTATOR_MOTOR = 8;
+
     public static final int DRIVER_CONTROLLER = 0;
     public static final int OPERATOR_CONTROLLER = 1;
 }

@@ -10,11 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.commands.ArcadeDrive;
-import static frc.robot.Constants.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.Auton;
+import frc.robot.subsystems.*;
+import frc.robot.commands.*;
+
+import static frc.robot.Constants.*;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,9 +26,17 @@ import frc.robot.commands.Auton;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
+  private final Hanger hanger = new Hanger();
+  private final Intake intake = new Intake();
+  private final Rotator rotator = new Rotator();
+  private final Shooter shooter = new Shooter();
 
   private final ArcadeDrive arcadeDrive = new ArcadeDrive(driveTrain);
-  private final Auton auton = new Auton();
+  private final GrabBarHang grabBarHang = new GrabBarHang(hanger);
+  private final GrabPowerCell grabPowerCell = new GrabPowerCell(intake);
+  private final RotateWheel rotateWheel = new RotateWheel(rotator);
+  private final Shoot shoot = new Shoot(shooter, -1);
+  private final Winch winch = new Winch(hanger);
 
   public static XboxController driverController = new XboxController(DRIVER_CONTROLLER);
   public static XboxController operatorController = new XboxController(OPERATOR_CONTROLLER);
@@ -49,7 +58,20 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton testButton = new JoystickButton(driverController, 0);
+    JoystickButton grabBarButton = new JoystickButton(driverController, 0);
+    grabBarButton.whileHeld(grabBarHang);
+
+    JoystickButton winchButton = new JoystickButton(operatorController, 1);
+    winchButton.whileHeld(winch);
+
+    JoystickButton shootButton = new JoystickButton(operatorController, 2);
+    shootButton.whileHeld(shoot);
+
+    JoystickButton rotateButton = new JoystickButton(operatorController, 3);
+    rotateButton.whileHeld(rotateWheel);
+
+    JoystickButton intakeButton = new JoystickButton(operatorController, 4);
+    intakeButton.whileHeld(grabPowerCell);
   }
 
 
@@ -60,6 +82,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return auton;
+    return new Auton(driveTrain, shooter);
   }
 }
