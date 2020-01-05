@@ -23,28 +23,8 @@ public final class Constants {
     public static final int kRightBackVictor = 4;
 
     //Shooter:
-    public static final class Shooter {
-        //Hardware Ports:
-        public static final int kFlywheel = 5;
-        public static final int kEncPinA = 8;
-        public static final int kEncPinB = 9;
-
-        //Hardware settings:
-        public static final double kRPSTolerance = 0.25;
-        public static final double kEncoderDPP = 0.001;
-        public static final double kTargetRPS = 3;
-
-        //PID Values:
-        //TODO - Tune these values
-        public static final double kP = 2;
-        public static final double kI = 0.1;
-        public static final double kD = 0.01;
-
-        //Voltage constants:
-        //TODO - DETERMINE PROPER VALUES BEFORE RUNNING
-        public static final double kSVolts = 6;
-        public static final double kVVoltSRP = 3;
-    }
+    public static final int kFlywheel = 5;
+    public static final double kTargetFlywheelRPS = 3 / 10;
 
     //Intake:
     public static final int kIntake = 6;

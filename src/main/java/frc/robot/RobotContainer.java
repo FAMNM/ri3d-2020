@@ -68,8 +68,8 @@ public class RobotContainer {
       .whenPressed(new InstantCommand(m_drivetrain::reverseDirection, m_drivetrain));
     //Manip A button activates shooter
     new JoystickButton(manipController, XboxController.Button.kA.value)
-      .whenPressed(new InstantCommand(m_shooter::enable, m_shooter))
-      .whenReleased(new InstantCommand(m_shooter::disable, m_shooter));
+      .whileHeld(new InstantCommand(m_shooter::activateFlywheel, m_shooter))
+      .whenReleased(new InstantCommand(m_shooter::stopFlywheel, m_shooter));
   }
 
 
