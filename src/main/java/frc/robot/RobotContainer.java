@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -25,6 +27,8 @@ import frc.robot.subsystems.Drivetrain;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain m_drivetrain = new Drivetrain();
+  private final Shooter m_shooter = new Shooter();
+  private final Intake m_intake = new Intake();
 
   private final XboxController driverController = new XboxController(1);
   private final XboxController manipController = new XboxController(2);
@@ -41,6 +45,11 @@ public class RobotContainer {
       driverController.getY(GenericHID.Hand.kRight)),
       m_drivetrain
     ));
+    m_intake.setDefaultCommand(new RunCommand(() -> m_intake.runIntake(
+      manipController.getTriggerAxis(GenericHID.Hand.kLeft),
+      manipController.getTriggerAxis(GenericHID.Hand.kRight)),
+      m_intake
+    ));
   }
 
   /**
@@ -52,6 +61,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(driverController, XboxController.Button.kY.value)
       .whenPressed(new InstantCommand(m_drivetrain::reverseDirection, m_drivetrain));
+    new JoystickButton(manipController, XboxController.Button.kA.value)
+      .whenPressed(new InstantCommand(m_shooter::spinFlywheel, m_shooter))
+      .whenReleased(new InstantCommand(m_shooter::stopFlywheel, m_shooter));
   }
 
 

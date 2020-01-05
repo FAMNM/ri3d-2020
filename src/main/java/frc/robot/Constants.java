@@ -20,4 +20,6 @@ public final class Constants {
     public static final int kLeftBackVictor = 2;
     public static final int kRightFrontVictor = 3;
     public static final int kRightBackVictor = 4;
+    public static final int kFlywheel = 5;
+    public static final int kIntake = 6;
 }
