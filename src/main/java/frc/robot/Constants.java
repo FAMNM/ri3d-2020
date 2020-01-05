@@ -17,14 +17,14 @@ package frc.robot;
  */
 public final class Constants {
     //Drivetrain:
-    public static final int kLeftFrontVictor = 1;
-    public static final int kLeftBackVictor = 2;
-    public static final int kRightFrontVictor = 3;
-    public static final int kRightBackVictor = 4;
+    public static final int kLeftFrontVictor = 3;
+    public static final int kLeftBackVictor = 4;
+    public static final int kRightFrontVictor = 1;
+    public static final int kRightBackVictor = 2;
 
     //Shooter:
     public static final int kFlywheel = 5;
-    public static final double kTargetFlywheelRPS = 3 / 10;
+    public static final double kTargetFlywheelRPS = 30 / 10;
 
     //Intake:
     public static final int kIntake = 6;
