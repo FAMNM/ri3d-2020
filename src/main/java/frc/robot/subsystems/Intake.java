@@ -7,7 +7,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import static frc.robot.Constants.*;
 
-public class Intake extends SubsystemBase{
+public class Intake extends SubsystemBase
+{
     private WPI_VictorSPX _intakeMotor;
     private SpeedControllerGroup intake;
     public Intake() {

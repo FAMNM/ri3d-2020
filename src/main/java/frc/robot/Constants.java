@@ -29,4 +29,7 @@ public final class Constants {
 
     public static final int kRotatorEncoderA = 0;
     public static final int kRotatorEncoderB = 0;
+
+    public static final int kArm = 0;
+    public static final int kWinch = 0;
 }
