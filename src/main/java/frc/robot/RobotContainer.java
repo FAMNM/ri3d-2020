@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class RobotContainer {
   private final Drivetrain drivetrain;
+  private final Shooter shooter;
   private final XboxController driverController, manipController;
 
   /**
@@ -22,6 +23,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     drivetrain = new Drivetrain();
+    shooter = new Shooter();
     driverController = new XboxController(1);
     manipController = new XboxController(2);
     // Configure the button bindings
@@ -46,7 +48,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return null;
+    return new AutoCommand(drivetrain, shooter);
   }
 }

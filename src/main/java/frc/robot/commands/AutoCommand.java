@@ -11,5 +11,4 @@ public class AutoCommand extends SequentialCommandGroup {
             new MoveInchesCommand(drivetrain, 10, 0.5)
         );
     }
-
 }
