@@ -2,8 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -15,11 +13,6 @@ public class Drivetrain extends SubsystemBase{
     private SpeedControllerGroup lDrive, rDrive;
 
     private DifferentialDrive drive;
-
-    private Encoder _lEncoder, _rEncoder;
-
-    // TODO: Find true value
-    public static final double ticksPerInches = 1;
 
     
     public Drivetrain() {
@@ -36,11 +29,6 @@ public class Drivetrain extends SubsystemBase{
         rDrive = new SpeedControllerGroup(_rfDrive, _rbDrive);
 
         drive = new DifferentialDrive(lDrive, rDrive);
-
-        _lEncoder = new Encoder(kLDriveEncoderA, kLDriveEncoderB, false);
-        _rEncoder = new Encoder(kRDriveEncoderA, kRDriveEncoderB, true);
-
-        resetEncoders();
         
     }
 
@@ -52,22 +40,6 @@ public class Drivetrain extends SubsystemBase{
         drive.arcadeDrive(speed, rotation, true);
     }
 
-    public void resetEncoders() {
-        _lEncoder.reset();
-        _rEncoder.reset();
-    }
-
-    public int getLEncoderValue() {
-        return _lEncoder.get();
-    }
-
-    public int getREncoderValue() {
-        return _rEncoder.get();
-    }
-
-    public int inchesToPulses(double inches) {
-        return (int)(inches * ticksPerInches);
-    }
 
     public void stop() {
         tankDrive(0, 0);

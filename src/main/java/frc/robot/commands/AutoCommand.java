@@ -8,7 +8,7 @@ public class AutoCommand extends SequentialCommandGroup {
 
     public AutoCommand(Drivetrain drivetrain, Shooter shooter) {
         addCommands(
-            new MoveInchesCommand(drivetrain, 10, 0.5)
+            new MoveTimeCommand(drivetrain, 1, 0.5)
         );
     }
 }
