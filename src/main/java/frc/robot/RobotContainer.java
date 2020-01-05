@@ -27,7 +27,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    drivetrain.setDefaultCommand(new TankDriveCommand(drivetrain, XboxController));
+    drivetrain.setDefaultCommand(new TankDriveCommand(drivetrain, driverController));
   }
 
   /**

@@ -17,7 +17,16 @@ package frc.robot;
  */
 public final class Constants {
     public static final int kLFDrive = 0;
-    public static final int kRFDrive = 1;
-    public static final int kLBDrive = 2;
-    public static final int kRBDrive = 3;
+    public static final int kRFDrive = 0;
+    public static final int kLBDrive = 0;
+    public static final int kRBDrive = 0;
+
+    public static final int kIntake = 0;
+    
+    public static final int kFlyWheel = 0;
+
+    public static final int kRotator = 0;
+
+    public static final int kRotatorEncoderA = 0;
+    public static final int kRotatorEncoderB = 0;
 }
