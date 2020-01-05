@@ -25,11 +25,12 @@ import frc.robot.subsystems.Shooter;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  //Subsystems:
   private final Drivetrain m_drivetrain = new Drivetrain();
   private final Shooter m_shooter = new Shooter();
   private final Intake m_intake = new Intake();
 
+  //Controllers:
   private final XboxController driverController = new XboxController(1);
   private final XboxController manipController = new XboxController(2);
 
@@ -40,11 +41,14 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+    //Drivetrain defaults to running tank drive with the two driver sticks
     m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.tankDrive(
       driverController.getY(GenericHID.Hand.kLeft),
       driverController.getY(GenericHID.Hand.kRight)),
       m_drivetrain
     ));
+
+    //Intake defaults to running the intake with the two manip triggers
     m_intake.setDefaultCommand(new RunCommand(() -> m_intake.runIntake(
       manipController.getTriggerAxis(GenericHID.Hand.kLeft),
       manipController.getTriggerAxis(GenericHID.Hand.kRight)),
@@ -59,8 +63,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    //Driver Y button reverses forward direction of robot
     new JoystickButton(driverController, XboxController.Button.kY.value)
       .whenPressed(new InstantCommand(m_drivetrain::reverseDirection, m_drivetrain));
+    //Manip A button activates shooter
     new JoystickButton(manipController, XboxController.Button.kA.value)
       .whenPressed(new InstantCommand(m_shooter::spinFlywheel, m_shooter))
       .whenReleased(new InstantCommand(m_shooter::stopFlywheel, m_shooter));
@@ -73,7 +79,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
+    //Currently, there is no autonomous command
     return null;
   }
 }

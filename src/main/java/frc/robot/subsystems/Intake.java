@@ -17,6 +17,8 @@ public class Intake extends SubsystemBase {
 
   /**
    * Drives the intake motor forward or backward with triggers
+   * @param left Value of the left trigger
+   * @param right Value of the right trigger
    */
   public void runIntake(double left, double right) {
     m_intake.set(right - left);

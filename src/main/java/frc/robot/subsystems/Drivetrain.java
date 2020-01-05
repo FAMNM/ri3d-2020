@@ -25,10 +25,13 @@ public class Drivetrain extends SubsystemBase {
 
   private final DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
 
+  //Reverses forward direction of robot when true
   private boolean kReverse = false;
 
   /**
    * Runs tank drive
+   * @param left Value of the left stick y axis
+   * @param right Value of the right stick y axis
    */
   public void tankDrive(double left, double right) {
     int dir = kReverse ? 1 : -1;
