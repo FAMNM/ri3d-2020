@@ -16,4 +16,8 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final int kLFDrive = 0;
+    public static final int kRFDrive = 1;
+    public static final int kLBDrive = 2;
+    public static final int kRBDrive = 3;
 }
