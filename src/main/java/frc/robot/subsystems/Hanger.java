@@ -23,20 +23,12 @@ public class Hanger extends SubsystemBase {
     winchMotor = new WPI_VictorSPX(WINCH_MOTOR);
   }
 
-  public void grabBar() {
-    armMotor.set(.5);
+  public void grabBar(double p) {
+    armMotor.set(p);
   }
 
-  public void winch() {
-    winchMotor.set(.5);
-  }
-
-  public void stopGrabbing() {
-    armMotor.set(0);
-  }
-
-  public void stopWinch() {
-    winchMotor.set(0);
+  public void winch(double p) {
+    winchMotor.set(p);
   }
 
   @Override

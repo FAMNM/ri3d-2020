@@ -12,21 +12,17 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import static frc.robot.Constants.*;
 
-public class Rotator extends SubsystemBase {
-  WPI_VictorSPX rotatorMotor;
+public class Conveyor extends SubsystemBase {
+  WPI_VictorSPX conveyorMotor;
   /**
-   * Creates a new Rotator.
+   * Creates a new Conveyor.
    */
-  public Rotator() {
-    rotatorMotor = new WPI_VictorSPX(ROTATOR_MOTOR);
+  public Conveyor() {
+    conveyorMotor = new WPI_VictorSPX(CONVEYOR_MOTOR);
   }
 
-  public void rotate() {
-    rotatorMotor.set(.5);
-  }
-
-  public void stopRotating() {
-    rotatorMotor.set(0);
+  public void conveyorMove(double p) {
+    conveyorMotor.set(p);
   }
 
   @Override

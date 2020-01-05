@@ -7,7 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -25,28 +24,33 @@ import static frc.robot.Constants.*;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DriveTrain driveTrain = new DriveTrain();
-  private final Hanger hanger = new Hanger();
-  private final Intake intake = new Intake();
-  private final Rotator rotator = new Rotator();
-  private final Shooter shooter = new Shooter();
+  private final DriveTrain driveTrain;
+  private final Hanger hanger;
+  private final Intake intake;
+  private final Shooter shooter;
+  private final Conveyor conveyor;
 
-  private final ArcadeDrive arcadeDrive = new ArcadeDrive(driveTrain);
-  private final GrabBarHang grabBarHang = new GrabBarHang(hanger);
-  private final GrabPowerCell grabPowerCell = new GrabPowerCell(intake);
-  private final RotateWheel rotateWheel = new RotateWheel(rotator);
-  private final Shoot shoot = new Shoot(shooter, -1);
-  private final Winch winch = new Winch(hanger);
+  private final ArcadeDrive arcadeDrive;
 
-  public static XboxController driverController = new XboxController(DRIVER_CONTROLLER);
-  public static XboxController operatorController = new XboxController(OPERATOR_CONTROLLER);
-
-
+  public static XboxController driverJoystick;
+  public static XboxController operatorJoystick;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    driveTrain = new DriveTrain();
+    hanger = new Hanger();
+    intake = new Intake();
+    shooter = new Shooter();
+    conveyor = new Conveyor();
+
+    arcadeDrive = new ArcadeDrive(driveTrain);
+    arcadeDrive.addRequirements(driveTrain);
+    driveTrain.setDefaultCommand(arcadeDrive);
+
+    driverJoystick = new XboxController(DRIVER_JOYSTICK);
+    operatorJoystick = new XboxController(OPERATOR_JOYSTICK);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -58,20 +62,53 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton grabBarButton = new JoystickButton(driverController, 0);
-    grabBarButton.whileHeld(grabBarHang);
+    JoystickButton grabBarButton = new JoystickButton(driverJoystick, 
+    XboxController.Button.kA.value);
+    grabBarButton.whileHeld(new GrabBarHang(hanger, .5));
 
-    JoystickButton winchButton = new JoystickButton(operatorController, 1);
-    winchButton.whileHeld(winch);
+    JoystickButton releaseBarButton = new JoystickButton(driverJoystick, 
+    XboxController.Button.kB.value);
+    releaseBarButton.whileHeld(new GrabBarHang(hanger, -.5));
 
-    JoystickButton shootButton = new JoystickButton(operatorController, 2);
-    shootButton.whileHeld(shoot);
+    JoystickButton winchButton = new JoystickButton(driverJoystick, 
+    XboxController.Button.kX.value);
+    winchButton.whileHeld(new Winch(hanger, .5));
 
-    JoystickButton rotateButton = new JoystickButton(operatorController, 3);
-    rotateButton.whileHeld(rotateWheel);
+    JoystickButton sendWinchButton = new JoystickButton(driverJoystick, 
+    XboxController.Button.kY.value);
+    sendWinchButton.whileHeld(new Winch(hanger, -.5));
 
-    JoystickButton intakeButton = new JoystickButton(operatorController, 4);
-    intakeButton.whileHeld(grabPowerCell);
+    JoystickButton shootButton = new JoystickButton(operatorJoystick, 
+    XboxController.Button.kBumperRight.value);
+    shootButton.whileHeld(new Shoot(shooter, .5, -1));
+
+    JoystickButton sendBackButton = new JoystickButton(operatorJoystick, 
+    XboxController.Button.kBumperLeft.value);
+    sendBackButton.whileHeld(new Shoot(shooter, -.5, -1));
+
+    JoystickButton conveyorButton = new JoystickButton(operatorJoystick, 
+    XboxController.Button.kStickRight.value);
+    conveyorButton.whileHeld(new ConveyorBelt(conveyor, .5, -1));
+
+    JoystickButton conveyorDownButton = new JoystickButton(operatorJoystick, 
+    XboxController.Button.kStickLeft.value);
+    conveyorDownButton.whileHeld(new ConveyorBelt(conveyor, .5, -1));
+
+    JoystickButton conveyorIntakeButton = new JoystickButton(operatorJoystick, 
+    XboxController.Button.kStart.value);
+    conveyorIntakeButton.whileHeld(new RunConveyorAndIntake(conveyor, intake, .5, .5, -1));
+
+    JoystickButton conveyorShooterButton = new JoystickButton(operatorJoystick, 
+    XboxController.Button.kBack.value);
+    conveyorShooterButton.whileHeld(new RunConveyorAndShooter(conveyor, shooter, .5, .5, -1));
+
+    JoystickButton intakeButton = new JoystickButton(operatorJoystick, 
+    XboxController.Button.kA.value);
+    intakeButton.whileHeld(new GrabPowerCell(intake, .5));
+
+    JoystickButton throwOutButton = new JoystickButton(operatorJoystick, 
+    XboxController.Button.kB.value);
+    throwOutButton.whileHeld(new GrabPowerCell(intake, -.5));
   }
 
 

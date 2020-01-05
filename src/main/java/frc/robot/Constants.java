@@ -26,7 +26,8 @@ public final class Constants {
     public static final int INTAKE_MOTOR = 6;
     public static final int SHOOTER_MOTOR = 7;
     public static final int ROTATOR_MOTOR = 8;
+    public static final int CONVEYOR_MOTOR = 9;
 
-    public static final int DRIVER_CONTROLLER = 0;
-    public static final int OPERATOR_CONTROLLER = 1;
+    public static final int DRIVER_JOYSTICK = 0;
+    public static final int OPERATOR_JOYSTICK = 1;
 }

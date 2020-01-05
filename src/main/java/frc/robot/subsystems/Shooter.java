@@ -21,12 +21,8 @@ public class Shooter extends SubsystemBase {
     shooterMotor = new WPI_VictorSPX(SHOOTER_MOTOR);
   }
 
-  public void shoot() {
-    shooterMotor.set(.5);
-  }
-
-  public void stopShooting() {
-    shooterMotor.set(0);
+  public void shoot(double p) {
+    shooterMotor.set(p);
   }
 
   @Override

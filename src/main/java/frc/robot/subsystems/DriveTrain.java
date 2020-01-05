@@ -10,10 +10,10 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.XboxController;
-import static frc.robot.Constants.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+
+import static frc.robot.Constants.*;
 
 public class DriveTrain extends SubsystemBase {
   WPI_VictorSPX flMotor;
@@ -36,7 +36,7 @@ public class DriveTrain extends SubsystemBase {
     dt = new DifferentialDrive(leftMotors, rightMotors);
   }
 
-  public void tankDrive(XboxController driver) {
+  public void arcadeDrive(XboxController driver) {
     double move = driver.getRawAxis(0);
     double rotation = driver.getRawAxis(1);
     dt.arcadeDrive(move, rotation);

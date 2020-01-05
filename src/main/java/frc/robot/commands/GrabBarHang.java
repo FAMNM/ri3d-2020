@@ -7,18 +7,18 @@
 
 package frc.robot.commands;
 
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Hanger;
 
 public class GrabBarHang extends CommandBase {
   Hanger hanger;
-  double time;
+  double power;
   /**
    * Creates a new GrabBarHang.
    */
-  public GrabBarHang(Hanger h) {
+  public GrabBarHang(Hanger h, double p) {
     hanger = h;
+    power = p;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(hanger);
   }
@@ -31,13 +31,13 @@ public class GrabBarHang extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hanger.grabBar();
+    hanger.grabBar(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    hanger.stopGrabbing();
+    hanger.grabBar(0);
   }
 
   // Returns true when the command should end.

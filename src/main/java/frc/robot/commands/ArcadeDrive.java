@@ -12,7 +12,6 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.RobotContainer;
 
 public class ArcadeDrive extends CommandBase {
-
   private final DriveTrain driveTrain;
   /**
    * Creates a new TankDrive.
@@ -20,7 +19,6 @@ public class ArcadeDrive extends CommandBase {
   public ArcadeDrive(DriveTrain dt) {
     driveTrain = dt;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
@@ -31,7 +29,7 @@ public class ArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveTrain.tankDrive(RobotContainer.driverController);
+    driveTrain.arcadeDrive(RobotContainer.driverJoystick);
   }
 
   // Called once the command ends or is interrupted.

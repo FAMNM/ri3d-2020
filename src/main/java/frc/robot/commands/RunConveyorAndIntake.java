@@ -9,34 +9,47 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Conveyor;
 
-public class GrabPowerCell extends CommandBase {
+public class RunConveyorAndIntake extends CommandBase {
+  Conveyor conveyor;
   Intake intake;
-  double power;
+  double powerConveyor;
+  double powerIntake;
+  double time;
   /**
-   * Creates a new GrabPowerCell.
+   * Creates a new RunConveyorAndIntake.
    */
-  public GrabPowerCell(Intake i, double p) {
+  public RunConveyorAndIntake(Conveyor c, Intake i, double pc, double pi, double t) {
+    conveyor = c;
     intake = i;
-    power = p;
+    powerConveyor = pc;
+    powerIntake = pi;
+    time = t;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(conveyor);
     addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if (time != - 1) {
+      withTimeout(time);
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.grabPowerCells(power);
+    conveyor.conveyorMove(powerConveyor);
+    intake.grabPowerCells(powerIntake);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    conveyor.conveyorMove(0);
     intake.grabPowerCells(0);
   }
 

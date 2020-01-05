@@ -21,12 +21,8 @@ public class Intake extends SubsystemBase {
     intakeMotor = new WPI_VictorSPX(INTAKE_MOTOR);
   }
 
-  public void grabPowerCells() {
-    intakeMotor.set(.5);
-  }
-
-  public void stopGrabbing() {
-    intakeMotor.set(0);
+  public void grabPowerCells(double p) {
+    intakeMotor.set(p);
   }
 
   @Override

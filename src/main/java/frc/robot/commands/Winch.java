@@ -12,11 +12,13 @@ import frc.robot.subsystems.Hanger;
 
 public class Winch extends CommandBase {
   Hanger hanger;
+  double power;
   /**
    * Creates a new Winch.
    */
-  public Winch(Hanger h) {
+  public Winch(Hanger h, double p) {
     hanger = h;
+    power = p;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(hanger);
   }
@@ -29,13 +31,13 @@ public class Winch extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hanger.winch();
+    hanger.winch(power);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    hanger.stopWinch();
+    hanger.winch(0);
   }
 
   // Returns true when the command should end.

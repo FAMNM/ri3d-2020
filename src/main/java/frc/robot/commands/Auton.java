@@ -21,6 +21,6 @@ public class Auton extends SequentialCommandGroup {
   public Auton(DriveTrain dt, Shooter s) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());
-    super(new Drive(dt, .5, 0, 2), new Shoot(s, 2));
+    super(new Drive(dt, .5, 0, 2), new Shoot(s, .5, 2));
   }
 }
