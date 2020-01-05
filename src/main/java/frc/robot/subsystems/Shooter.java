@@ -7,25 +7,37 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import frc.robot.Constants;
 
-public class Shooter extends SubsystemBase {
-  private final SpeedController m_flywheel = new PWMVictorSPX(Constants.kFlywheel);
+public class Shooter extends PIDSubsystem {
+  private final SpeedController m_flywheel = new PWMVictorSPX(Constants.Shooter.kFlywheel);
+  private final Encoder m_encoder = new Encoder(Constants.Shooter.kEncPinA, Constants.Shooter.kEncPinB);
+  private final SimpleMotorFeedforward m_flywheelFeedforward = new SimpleMotorFeedforward(Constants.Shooter.kSVolts, Constants.Shooter.kVVoltSRP);
 
-  /**
-   * Spins the flywheel forward
-   */
-  public void spinFlywheel() {
-    m_flywheel.set(1);
+  public Shooter() {
+    super(new PIDController(Constants.Shooter.kP, Constants.Shooter.kI, Constants.Shooter.kD));
+    getController().setTolerance(Constants.Shooter.kRPSTolerance);
+    m_encoder.setDistancePerPulse(Constants.Shooter.kEncoderDPP);
+    setSetpoint(Constants.Shooter.kTargetRPS);
   }
 
-  /**
-   * Stops the flywheel
-   */
-  public void stopFlywheel() {
-    m_flywheel.stopMotor();
+  @Override
+  protected void useOutput(double output, double setpoint) {
+    m_flywheel.setVoltage(output + m_flywheelFeedforward.calculate(setpoint));
+  }
+
+  @Override
+  protected double getMeasurement() {
+    return m_encoder.getRate();
+  }
+
+  public boolean atSetpoint() {
+    return m_controller.atSetpoint();
   }
 }
