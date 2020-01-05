@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import static frc.robot.Constants.*;
+import static frc.robot.RobotMap.*;
 
 public class Rotator extends SubsystemBase{
     private WPI_VictorSPX _rotatorMotor;

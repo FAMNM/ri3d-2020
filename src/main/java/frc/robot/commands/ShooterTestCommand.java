@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import java.util.Map;
+
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -9,8 +11,9 @@ import frc.robot.subsystems.Shooter;
 
 public class ShooterTestCommand extends CommandBase {
     private Shooter shooter;
+
     private ShuffleboardTab flyWheelTab;
-    private NetworkTableEntry flyWheelSpeed, p, i, d;
+    private NetworkTableEntry flyWheelSpeed;
 
     public ShooterTestCommand(Shooter shooter) {
         this.shooter = shooter;
@@ -20,31 +23,12 @@ public class ShooterTestCommand extends CommandBase {
         this.flyWheelSpeed = this.flyWheelTab
                                  .add("Speed", 0)
                                  .withWidget(BuiltInWidgets.kNumberSlider)
+                                 .withProperties(Map.of("min", -1, "max", 1))
                                  .getEntry();
-        
-        this.p = this.flyWheelTab
-                     .add("p", 0.01)
-                     .withWidget(BuiltInWidgets.kNumberSlider)
-                     .getEntry();
-        
-        this.i = this.flyWheelTab
-                     .add("i", 0)
-                     .withWidget(BuiltInWidgets.kNumberSlider)
-                     .getEntry();
-
-        this.d = this.flyWheelTab
-                     .add("d", 0)
-                     .withWidget(BuiltInWidgets.kNumberSlider)
-                     .getEntry();
-    }
-
-    @Override
-    public void initialize() {
     }
 
     @Override
     public void execute() {
-        shooter.setPidConstants(p.getDouble(0), i.getDouble(0), d.getDouble(0));
         shooter.shoot(flyWheelSpeed.getDouble(0));
     }
 
