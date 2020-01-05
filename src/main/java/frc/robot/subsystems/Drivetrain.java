@@ -8,16 +8,21 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.VictorSP;
-import java.util.function.DoubleSupplier;
-import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-
+import edu.wpi.first.wpilibj.PWMVictorSPX;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
-  private final WPI_VictorSPX m_left = new WPI_VictorSPX(Constants.kLeftVictor);
-  private final WPI_VictorSPX m_right = new WPI_VictorSPX(Constants.kRightVictor);
+  private final SpeedController m_leftFront = new PWMVictorSPX(Constants.kLeftFrontVictor);
+  private final SpeedController m_leftBack = new PWMVictorSPX(Constants.kLeftBackVictor);
+  private final SpeedControllerGroup m_left = new SpeedControllerGroup(m_leftFront, m_leftBack);
+
+  private final SpeedController m_rightFront = new PWMVictorSPX(Constants.kRightFrontVictor);
+  private final SpeedController m_rightBack = new PWMVictorSPX(Constants.kRightBackVictor);
+  private final SpeedControllerGroup m_right = new SpeedControllerGroup(m_rightFront, m_rightBack);
+
   private final DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
 
   private boolean kReverse = false;
@@ -26,7 +31,7 @@ public class Drivetrain extends SubsystemBase {
    * Runs tank drive
    */
   public void tankDrive(double left, double right) {
-    int dir = kReverse ? -1 : 1;
+    int dir = kReverse ? 1 : -1;
     m_drive.tankDrive(dir * left, dir * right);
   }
 
