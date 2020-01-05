@@ -21,6 +21,11 @@ public final class Constants {
     public static final int kLBDrive = 0;
     public static final int kRBDrive = 0;
 
+    public static final int kLDriveEncoderA = 0;
+    public static final int kLDriveEncoderB = 0;
+    public static final int kRDriveEncoderA = 0;
+    public static final int kRDriveEncoderB = 0;
+
     public static final int kIntake = 0;
     
     public static final int kFlyWheel = 0;
