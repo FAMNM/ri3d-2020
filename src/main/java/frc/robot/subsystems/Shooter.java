@@ -23,17 +23,15 @@ public class Shooter extends SubsystemBase{
         _pid = new PIDController(kP, kI, kD);
     }
 
-    public void activate(double speed) {
+    public void shoot(double speed) {
 
         _pid.setSetpoint(speed);
-
-        _motor.set(ControlMode.Velocity, speed);
 
         double realVelocity = _encoder.getRate();
 
         double pidOut = _pid.calculate(realVelocity);
 
-        _motor.set(pidOut);
+        _motor.set(ControlMode.Velocity, pidOut);
 
     }
 

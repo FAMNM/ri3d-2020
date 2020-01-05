@@ -16,7 +16,7 @@ public class ShooterTestCommand extends CommandBase {
         this.shooter = shooter;
 
         this.flyWheelTab = Shuffleboard.getTab("Flywheel");
-        
+
         this.flyWheelSpeed = this.flyWheelTab
                                  .add("Speed", 0)
                                  .withWidget(BuiltInWidgets.kNumberSlider)
@@ -45,7 +45,7 @@ public class ShooterTestCommand extends CommandBase {
     @Override
     public void execute() {
         shooter.setPidConstants(p.getDouble(0), i.getDouble(0), d.getDouble(0));
-        shooter.activate(flyWheelSpeed.getDouble(0));
+        shooter.shoot(flyWheelSpeed.getDouble(0));
     }
 
     @Override
