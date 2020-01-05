@@ -17,11 +17,21 @@ public class Drivetrain extends SubsystemBase {
   private final VictorSP m_left = new VictorSP(Constants.kLeftVictor);
   private final VictorSP m_right = new VictorSP(Constants.kRightVictor);
 
+  private boolean kReverse = false;
+
   /**
    * Runs tank drive
    */
   public void tankDrive(double left, double right) {
-    m_left.setSpeed(left);
-    m_right.setSpeed(right);
+    int dir = kReverse ? -1 : 1;
+    m_left.setSpeed(-dir * left);
+    m_right.setSpeed(dir * right);
+  }
+
+  /**
+   * Swaps the forward direction
+   */
+  public void reverseDirection() {
+    kReverse = !kReverse;
   }
 }
