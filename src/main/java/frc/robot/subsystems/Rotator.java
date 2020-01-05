@@ -18,6 +18,7 @@ public class Rotator extends SubsystemBase{
     public Rotator() {
         _rotatorMotor = new WPI_VictorSPX(kRotator);
         _rotatorEncoder = new Encoder(kRotatorEncoderA, kRotatorEncoderB);
+        _rotatorEncoder.reset();
     }
 
     private double rotationsToTicks(double rotation) {

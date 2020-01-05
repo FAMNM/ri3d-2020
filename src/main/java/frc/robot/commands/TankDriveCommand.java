@@ -36,7 +36,10 @@ public class TankDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      drivetrain.tankDrive(controller.getY(GenericHID.Hand.kLeft), controller.getY(GenericHID.Hand.kRight));
+      drivetrain.tankDrive(
+        -controller.getY(GenericHID.Hand.kLeft), 
+        -controller.getY(GenericHID.Hand.kRight)
+      );
   }
 
   // Returns true when the command should end.

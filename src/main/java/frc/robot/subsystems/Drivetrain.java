@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
 import static frc.robot.Constants.*;
 
@@ -11,21 +12,31 @@ public class Drivetrain extends SubsystemBase{
 
     private SpeedControllerGroup lDrive, rDrive;
 
+    private DifferentialDrive drive;
+
     
     public Drivetrain() {
         _lfDrive = new WPI_VictorSPX(kLFDrive);
-        _lfDrive.setInverted(true);
         _rfDrive = new WPI_VictorSPX(kRFDrive);
         _lbDrive = new WPI_VictorSPX(kLBDrive);
-        _lbDrive.setInverted(true);
         _rbDrive = new WPI_VictorSPX(kRBDrive);
+
+        
+        _rfDrive.setInverted(true);
+        
+        _rbDrive.setInverted(true);
         
         lDrive = new SpeedControllerGroup(_lfDrive, _lbDrive);
         rDrive = new SpeedControllerGroup(_rfDrive, _rbDrive);
+
+        drive = new DifferentialDrive(lDrive, rDrive);
     }
 
     public void tankDrive(double l, double r) {
-        lDrive.set(l);
-        rDrive.set(r);
+        drive.tankDrive(l, r);
+    }
+
+    public void arcadeDrive(double speed, double rotation) {
+        drive.arcadeDrive(speed, rotation, true);
     }
 }
