@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 /**
@@ -16,4 +9,20 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final int kLFDrive = 3;
+    public static final int kRFDrive = 1;
+    public static final int kLBDrive = 4;
+    public static final int kRBDrive = 2;
+
+    public static final int kIntake = 5;
+    
+    public static final int kFlyWheel = 6;
+
+    public static final int kArm = 7;
+    public static final int kWinch = 8;
+
+    public static final int kConveyor = 9;
+
+    public static final double kConveyorSpeed = 0.5;
+    public static final double kFlywheelSpeed = 0.5;
 }

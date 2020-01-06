@@ -9,11 +9,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.*;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystems.*;
-import frc.robot.commands.*;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -22,62 +23,72 @@ import frc.robot.commands.*;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final DriveTrain driveTrain;
-  private final ClimbingArm climbArm;
-  private final Winch winch;
+  // Subsystems
+  private final Intake m_intake = new Intake();
+  private final Conveyor m_conveyor = new Conveyor();
+  private final Shooter m_shooter = new Shooter();
+  private final DriveTrain m_driveTrain = new DriveTrain();
+  private final ClimbingArm m_climbArm = new ClimbingArm();
+  private final Winch m_winch = new Winch();
 
-  private final ArcadeDrive arcadeDrive;
-  private final DeployClimbArm deployClimbArm;
-  private final DeployWinch deployWinch;
-
-  public static XboxController driverController;
-  public static XboxController operatorController;
+  // Controllers
+  private final XboxController m_driver = new XboxController(0);
+  private final XboxController m_manip = new XboxController(1);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    driverController = new XboxController(0);
-    operatorController = new XboxController(1);
-
-    driveTrain = new DriveTrain();
-    climbArm = new ClimbingArm();
-    winch = new Winch();
-
-    arcadeDrive = new ArcadeDrive(driveTrain);
-    driveTrain.setDefaultCommand(arcadeDrive);
-
-    deployClimbArm = new DeployClimbArm(climbArm);
-    climbArm.setDefaultCommand(deployClimbArm);
-
-    deployWinch = new DeployWinch(winch);
-    winch.setDefaultCommand(deployWinch);
     // Configure the button bindings
     configureButtonBindings();
+
+    m_intake.setDefaultCommand(new RunCommand(() -> m_intake.runIntake(
+      m_manip.getTriggerAxis(GenericHID.Hand.kLeft),
+      m_manip.getTriggerAxis(GenericHID.Hand.kRight)),
+      m_intake
+    ));
+    m_driveTrain.setDefaultCommand(new RunCommand(() -> m_driveTrain.arcadeDrive(
+      m_driver.getY(GenericHID.Hand.kLeft),
+      m_driver.getX(GenericHID.Hand.kLeft)),
+      m_driveTrain
+    ));
+    m_climbArm.setDefaultCommand(new RunCommand(() -> m_climbArm.climb(
+      m_manip.getY(GenericHID.Hand.kLeft)),
+      m_climbArm
+    ));
+    m_winch.setDefaultCommand(new RunCommand(() -> m_winch.runWinch(
+      m_manip.getY(GenericHID.Hand.kRight)),
+      m_winch
+    ));
   }
 
-  /**
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
+
   private void configureButtonBindings() {
-    JoystickButton reverseButton = new JoystickButton(driverController,
-    XboxController.Button.kY.value);
-    reverseButton.whenPressed(new RunCommand(() -> driveTrain.changeDirection(), driveTrain));
-
+    new JoystickButton(m_driver, XboxController.Button.kY.value)
+      .whenPressed(new RunCommand(() -> m_driveTrain.changeDirection(), m_driveTrain));
+    new JoystickButton(m_manip, XboxController.Button.kA.value)
+      .whenHeld(new ShootCommand(m_shooter));
+    new DPadUp().whileActiveContinuous(new ConveyorUp(m_conveyor));
+    new DPadDown().whileActiveContinuous(new ConveyorDown(m_conveyor));
   }
 
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return new ArcadeDrive(driveTrain);
+    return null;
+  }
+
+  private class DPadUp extends Trigger {
+    @Override
+    public boolean get() {
+      int pov = m_manip.getPOV();
+      return pov == 315 || pov <= 45;
+    }
+  }
+
+  private class DPadDown extends Trigger {
+    @Override
+    public boolean get() {
+      int pov = m_manip.getPOV();
+      return pov >= 135 && pov <= 225;
+    }
   }
 }

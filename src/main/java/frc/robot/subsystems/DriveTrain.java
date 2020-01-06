@@ -10,45 +10,25 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID;
 
 public class DriveTrain extends SubsystemBase {
-  private WPI_VictorSPX flMotor;
-  private WPI_VictorSPX frMotor;
-  private WPI_VictorSPX rlMotor;
-  private WPI_VictorSPX rrMotor;
-  private SpeedControllerGroup leftMotors;
-  private SpeedControllerGroup rightMotors;
-  private DifferentialDrive driveTrain;
-  private int direction;
-  /**
-   * Creates a new DriveTrain.
-   */
-  public DriveTrain() {
-    flMotor = new WPI_VictorSPX(3);
-    frMotor = new WPI_VictorSPX(1);
-    rlMotor = new WPI_VictorSPX(4);
-    rrMotor = new WPI_VictorSPX(2);
-    leftMotors = new SpeedControllerGroup(flMotor, rlMotor);
-    rightMotors = new SpeedControllerGroup(frMotor, rrMotor);
-    driveTrain = new DifferentialDrive(leftMotors, rightMotors);
-    direction = 1;
-  }
+  private WPI_VictorSPX m_LFDrive = new WPI_VictorSPX(Constants.kLFDrive);
+  private WPI_VictorSPX m_RFDrive = new WPI_VictorSPX(Constants.kRFDrive);
+  private WPI_VictorSPX m_LBDrive = new WPI_VictorSPX(Constants.kLBDrive);
+  private WPI_VictorSPX m_RBDrive = new WPI_VictorSPX(Constants.kRBDrive);
+  private SpeedControllerGroup m_left = new SpeedControllerGroup(m_LFDrive, m_LBDrive);
+  private SpeedControllerGroup m_right = new SpeedControllerGroup(m_RFDrive, m_RBDrive);
+  private DifferentialDrive m_driveTrain = new DifferentialDrive(m_left, m_right);
+  private int direction = -1;
 
-  public void arcadeDrive(XboxController controller) {
-    double move = controller.getY(GenericHID.Hand.kLeft) * direction;
-    double turn = controller.getX(GenericHID.Hand.kLeft);
-    driveTrain.arcadeDrive(move, turn);
+  public void arcadeDrive(double move, double turn) {
+    m_driveTrain.arcadeDrive(move * direction, turn);
   }
 
   public void changeDirection() {
     direction *= -1;
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
   }
 }
