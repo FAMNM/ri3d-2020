@@ -12,6 +12,8 @@ public class ShootCommand extends CommandBase {
     public ShootCommand(Shooter shooter, XboxController controller) {
         this.shooter = shooter;
         this.controller = controller;
+
+        addRequirements(shooter);
     }
 
     @Override

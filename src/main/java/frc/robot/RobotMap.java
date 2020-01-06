@@ -16,13 +16,12 @@ public final class RobotMap {
     public static final int kLBDrive = 4;
     public static final int kRBDrive = 2;
 
-    public static final int kIntake = 0;
+    public static final int kIntake = 5;
     
-    public static final int kFlyWheel = 0;
-    public static final int kRotator = 0;
+    public static final int kFlyWheel = 6;
 
-    public static final int kArm = 0;
-    public static final int kWinch = 0;
+    public static final int kArm = 7;
+    public static final int kWinch = 8;
 
-    public static final int kConveyor = 0;
+    public static final int kConveyor = 9;
 }

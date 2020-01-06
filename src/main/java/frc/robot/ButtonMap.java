@@ -3,6 +3,7 @@ package frc.robot;
 import java.util.HashMap;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import static edu.wpi.first.wpilibj.XboxController.Button.*;
@@ -11,7 +12,7 @@ import static edu.wpi.first.wpilibj.XboxController.Button.*;
 public class ButtonMap{
 	private static HashMap<String, Integer> map;
 
-	{
+	static{
 		map = new HashMap<String, Integer>();
 		map.put("intake_in", kBumperLeft.value);
 		map.put("intake_out", kBumperRight.value);
@@ -22,7 +23,8 @@ public class ButtonMap{
 		
 	}
 
-	public static JoystickButton getButton(GenericHID stick, String button) {
-		return new JoystickButton(stick, map.get(button));
+	public static JoystickButton getButton(XboxController stick, String name) {
+		int number = map.get(name);
+		return new JoystickButton(stick, number);
 	}
 }

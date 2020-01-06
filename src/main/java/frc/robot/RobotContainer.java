@@ -19,11 +19,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import static frc.robot.ButtonMap.*;
 
 public class RobotContainer {
+
   private final Drivetrain drivetrain;
   private final Shooter shooter;
   private final Intake intake;
   private final Conveyor conveyor;
-  private final XboxController driverController, manipController;
+  private final XboxController /*driverController,*/ manipController;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -33,12 +34,12 @@ public class RobotContainer {
     shooter = new Shooter();
     intake = new Intake();
     conveyor = new Conveyor();
-    driverController = new XboxController(1);
-    manipController = new XboxController(2);
+    // driverController = new XboxController(0);
+    manipController = new XboxController(0); /* 1 */
     // Configure the button bindings
     configureButtonBindings();
 
-    drivetrain.setDefaultCommand(new ArcadeDriveCommand(drivetrain, driverController));
+    // drivetrain.setDefaultCommand(new ArcadeDriveCommand(drivetrain, driverController));
     shooter.setDefaultCommand(new ShootCommand(shooter, manipController));
     
   }
@@ -64,9 +65,9 @@ public class RobotContainer {
     
   }
 
-  private JoystickButton drbtn(String name) {
+  /*private JoystickButton drbtn(String name) {
     return getButton(driverController, name);
-  }
+  }*/
 
   private JoystickButton mpbtn(String name) {
     return getButton(manipController, name);
@@ -84,5 +85,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return new AutoCommand(drivetrain, shooter);
+  }
+
+  public boolean myCondition(int i, int j) {
+    System.out.println("Condition!");
+    return i < j;
   }
 }
