@@ -68,6 +68,12 @@ public class RobotContainer {
       m_manip.getY(GenericHID.Hand.kRight)),
       m_winch
     ));
+
+    // Conveyor default command (Stop conveyor):
+    m_conveyor.setDefaultCommand(new RunCommand(() -> m_conveyor.stopConveyor(), m_conveyor));
+
+    // Shooter default command (Stop shooter):
+    m_shooter.setDefaultCommand(new RunCommand(() -> m_shooter.stop(), m_shooter));
   }
 
   /**
@@ -79,11 +85,13 @@ public class RobotContainer {
       .whenPressed(new InstantCommand(m_driveTrain::changeDirection, m_driveTrain));
     // Activate shooter (Manip A):
     new JoystickButton(m_manip, XboxController.Button.kA.value)
-      .whenHeld(new ShootCommand(m_shooter));
+      .whileHeld(new RunCommand(() -> m_shooter.shoot(), m_shooter));
     // Move conveyor up (Manip DPad Up):
-    new DPadUp().whileActiveContinuous(new ConveyorUp(m_conveyor));
+    new ManipDPadUp()
+      .whileActiveContinuous(new RunCommand(() -> m_conveyor.raiseConveyor(), m_conveyor));
     // Move conveyor down (Manip DPad Down):
-    new DPadDown().whileActiveContinuous(new ConveyorDown(m_conveyor));
+    new ManipDPadDown()
+      .whileActiveContinuous(new RunCommand(() -> m_conveyor.lowerConveyor(), m_conveyor));
   }
 
   /**
@@ -97,7 +105,7 @@ public class RobotContainer {
   /**
    * Trigger to return true when up is pressed on manip dpad
    */
-  private class DPadUp extends Trigger {
+  private class ManipDPadUp extends Trigger {
     @Override
     public boolean get() {
       int pov = m_manip.getPOV();
@@ -108,7 +116,7 @@ public class RobotContainer {
   /**
    * Trigger to return true when down is pressed on manip dpad
    */
-  private class DPadDown extends Trigger {
+  private class ManipDPadDown extends Trigger {
     @Override
     public boolean get() {
       int pov = m_manip.getPOV();
