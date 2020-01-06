@@ -7,18 +7,20 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
-public class ExampleSubsystem extends SubsystemBase {
+public class Intake extends SubsystemBase {
+  private final WPI_VictorSPX m_intake = new WPI_VictorSPX(Constants.kIntake);
+
   /**
-   * Creates a new ExampleSubsystem.
+   * Runs the intake motor
+   * @param left Value of left trigger
+   * @param right Value of right trigger
    */
-  public ExampleSubsystem() {
-
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  public void runIntake(double left, double right) {
+    m_intake.set(right - left);
   }
 }
