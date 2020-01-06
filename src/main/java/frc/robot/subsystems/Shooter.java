@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -33,7 +32,8 @@ public class Shooter extends SubsystemBase {
         // Add a slider to adjust the speed of the shooter:
         flywheelSpeedEntry = flywheelSpeedTab.add("Speed", 0).withWidget(BuiltInWidgets.kNumberSlider)
                 .withProperties(Map.of("min", -1, "max", 1)).getEntry();
-        currentFlywheelSpeedEntry = flywheelSpeedTab.add("Flywheel speed",                       kFlywheelSpeed).getEntry();
+        // Add a space to display the flywheel's current speed setting:
+        currentFlywheelSpeedEntry = flywheelSpeedTab.add("Flywheel speed", kFlywheelSpeed).getEntry();
     }
 
     /**
@@ -66,7 +66,7 @@ public class Shooter extends SubsystemBase {
         // Update the flywheel speed using the speed slider in Shuffleboard:
         kFlywheelSpeed = flywheelSpeedEntry.getDouble(0.5);
 
+        // Display the current speed of the flywheel in Shuffleboard:
         currentFlywheelSpeedEntry.setDouble(kFlywheelSpeed);
-        
     }
 }

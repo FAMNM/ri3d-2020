@@ -11,25 +11,25 @@ package frc.robot;
 public final class Constants {
     // Hardware Ports:
     // -- Drivetrain:
-    public static final int kLFDrive = 3;
-    public static final int kRFDrive = 1;
-    public static final int kLBDrive = 4;
-    public static final int kRBDrive = 2;
+    public static final int kLFDrive = 9;
+    public static final int kRFDrive = 7;
+    public static final int kLBDrive = 8;
+    public static final int kRBDrive = 6;
 
     // -- Intake:
-    public static final int kIntake = 5;
+    public static final int kIntake = 3;
     
     // -- Shooter:
-    public static final int kFlyWheel = 6;
+    public static final int kFlyWheel = 2;
 
     // -- Climbing Arm:
-    public static final int kArm = 7;
+    public static final int kArm = 5;
 
     // -- Winch:
-    public static final int kWinch = 8;
+    public static final int kWinch = 4;
 
     // -- Conveyor:
-    public static final int kConveyor = 9;
+    public static final int kConveyor = 1;
 
     // Constant Variables:
     public static final double kConveyorSpeed = 0.5;
