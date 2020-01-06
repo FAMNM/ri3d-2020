@@ -9,9 +9,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.commands.ConveyorDown;
+import frc.robot.commands.ConveyorUp;
+import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -20,12 +24,13 @@ import edu.wpi.first.wpilibj2.command.Command;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  // Subsystems
+  private final Intake m_intake = new Intake();
+  private final Conveyor m_conveyor = new Conveyor();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
-
+  // Controllers
+  private final XboxController m_driver = new XboxController(0);
+  private final XboxController m_manip = new XboxController(1);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -33,6 +38,12 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    m_intake.setDefaultCommand(new RunCommand(() -> m_intake.runIntake(
+      m_manip.getTriggerAxis(GenericHID.Hand.kLeft),
+      m_manip.getTriggerAxis(GenericHID.Hand.kRight)),
+      m_intake
+    ));
   }
 
   /**
@@ -42,6 +53,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    new DPadUp().whileActiveContinuous(new ConveyorUp(m_conveyor));
+    new DPadDown().whileActiveContinuous(new ConveyorDown(m_conveyor));
   }
 
 
@@ -52,6 +65,22 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return null;
+  }
+
+  private class DPadUp extends Trigger {
+    @Override
+    public boolean get() {
+      int pov = m_manip.getPOV();
+      return pov == 315 || pov <= 45;
+    }
+  }
+
+  private class DPadDown extends Trigger {
+    @Override
+    public boolean get() {
+      int pov = m_manip.getPOV();
+      return pov >= 135 && pov <= 225;
+    }
   }
 }

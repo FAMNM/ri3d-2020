@@ -16,4 +16,9 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static final int kIntake = 5;
+    public static final int kConveyor = 6;
+    public static final int kFlywheel = 7;
+
+    public static final double kConveyorSpeed = 0.5;
 }
