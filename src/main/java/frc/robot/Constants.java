@@ -24,4 +24,5 @@ public final class Constants {
     public static final int kConveyor = 9;
 
     public static final double kConveyorSpeed = 0.5;
+    public static final double kFlywheelSpeed = 0.5;
 }

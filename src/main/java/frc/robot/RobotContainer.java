@@ -13,6 +13,7 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -27,6 +28,9 @@ public class RobotContainer {
   private final Intake m_intake = new Intake();
   private final Conveyor m_conveyor = new Conveyor();
   private final Shooter m_shooter = new Shooter();
+  private final DriveTrain m_driveTrain = new DriveTrain();
+  private final ClimbingArm m_climbArm = new ClimbingArm();
+  private final Winch m_winch = new Winch();
 
   // Controllers
   private final XboxController m_driver = new XboxController(0);
@@ -44,17 +48,32 @@ public class RobotContainer {
       m_manip.getTriggerAxis(GenericHID.Hand.kRight)),
       m_intake
     ));
+    m_driveTrain.setDefaultCommand(new RunCommand(() -> m_driveTrain.arcadeDrive(
+      m_driver.getY(GenericHID.Hand.kLeft),
+      m_driver.getX(GenericHID.Hand.kLeft)),
+      m_driveTrain
+    ));
+    m_climbArm.setDefaultCommand(new RunCommand(() -> m_climbArm.climb(
+      m_manip.getY(GenericHID.Hand.kLeft)),
+      m_climbArm
+    ));
+    m_winch.setDefaultCommand(new RunCommand(() -> m_winch.runWinch(
+      m_manip.getY(GenericHID.Hand.kRight)),
+      m_winch
+    ));
   }
 
 
   private void configureButtonBindings() {
-    new JoystickButton(m_manip, XboxController.Button.kA.value).whenHeld(new ShootCommand(m_shooter));
+    new JoystickButton(m_driver, XboxController.Button.kY.value)
+      .whenPressed(new InstantCommand(m_driveTrain::changeDirection, m_driveTrain));
+    new JoystickButton(m_manip, XboxController.Button.kA.value)
+      .whenHeld(new ShootCommand(m_shooter));
     new DPadUp().whileActiveContinuous(new ConveyorUp(m_conveyor));
     new DPadDown().whileActiveContinuous(new ConveyorDown(m_conveyor));
   }
 
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
     return null;
   }
 
