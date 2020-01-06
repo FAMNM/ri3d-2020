@@ -9,9 +9,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.subsystems.*;
+import frc.robot.commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -21,16 +23,36 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final DriveTrain driveTrain;
+  private final ClimbingArm climbArm;
+  private final Winch winch;
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final ArcadeDrive arcadeDrive;
+  private final DeployClimbArm deployClimbArm;
+  private final DeployWinch deployWinch;
 
-
+  public static XboxController driverController;
+  public static XboxController operatorController;
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    driverController = new XboxController(0);
+    operatorController = new XboxController(1);
+
+    driveTrain = new DriveTrain();
+    climbArm = new ClimbingArm();
+    winch = new Winch();
+
+    arcadeDrive = new ArcadeDrive(driveTrain);
+    driveTrain.setDefaultCommand(arcadeDrive);
+
+    deployClimbArm = new DeployClimbArm(climbArm);
+    climbArm.setDefaultCommand(deployClimbArm);
+
+    deployWinch = new DeployWinch(winch);
+    winch.setDefaultCommand(deployWinch);
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -42,6 +64,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    JoystickButton reverseButton = new JoystickButton(driverController,
+    XboxController.Button.kY.value);
+    reverseButton.whenPressed(new RunCommand(() -> driveTrain.changeDirection(), driveTrain));
+
   }
 
 
@@ -52,6 +78,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return new ArcadeDrive(driveTrain);
   }
 }
