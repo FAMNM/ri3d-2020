@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // Subsystems
+  // Subsystems:
   private final Intake m_intake = new Intake();
   private final Conveyor m_conveyor = new Conveyor();
   private final Shooter m_shooter = new Shooter();
@@ -32,7 +32,7 @@ public class RobotContainer {
   private final ClimbingArm m_climbArm = new ClimbingArm();
   private final Winch m_winch = new Winch();
 
-  // Controllers
+  // Controllers:
   private final XboxController m_driver = new XboxController(0);
   private final XboxController m_manip = new XboxController(1);
 
@@ -40,43 +40,63 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Configure the button bindings
+    // Configure the button bindings:
     configureButtonBindings();
 
+    // Intake default command (Run intake):
     m_intake.setDefaultCommand(new RunCommand(() -> m_intake.runIntake(
       m_manip.getTriggerAxis(GenericHID.Hand.kLeft),
       m_manip.getTriggerAxis(GenericHID.Hand.kRight)),
       m_intake
     ));
+
+    // Drivetrain default command (Arcade drive):
     m_driveTrain.setDefaultCommand(new RunCommand(() -> m_driveTrain.arcadeDrive(
       m_driver.getY(GenericHID.Hand.kLeft),
       m_driver.getX(GenericHID.Hand.kLeft)),
       m_driveTrain
     ));
+
+    // Climbing arm default command (Run arm):
     m_climbArm.setDefaultCommand(new RunCommand(() -> m_climbArm.climb(
       m_manip.getY(GenericHID.Hand.kLeft)),
       m_climbArm
     ));
+
+    // Winch default command (Run winch):
     m_winch.setDefaultCommand(new RunCommand(() -> m_winch.runWinch(
       m_manip.getY(GenericHID.Hand.kRight)),
       m_winch
     ));
   }
 
-
+  /**
+   * Configures the bindings for the controller buttons
+   */
   private void configureButtonBindings() {
+    // Change forward direction (Drive Y):
     new JoystickButton(m_driver, XboxController.Button.kY.value)
       .whenPressed(new InstantCommand(m_driveTrain::changeDirection, m_driveTrain));
+    // Activate shooter (Manip A):
     new JoystickButton(m_manip, XboxController.Button.kA.value)
       .whenHeld(new ShootCommand(m_shooter));
+    // Move conveyor up (Manip DPad Up):
     new DPadUp().whileActiveContinuous(new ConveyorUp(m_conveyor));
+    // Move conveyor down (Manip DPad Down):
     new DPadDown().whileActiveContinuous(new ConveyorDown(m_conveyor));
   }
 
+  /**
+   * Sets the command to run during autonomous
+   * @return The autonomous command
+   */
   public Command getAutonomousCommand() {
     return null;
   }
 
+  /**
+   * Trigger to return true when up is pressed on manip dpad
+   */
   private class DPadUp extends Trigger {
     @Override
     public boolean get() {
@@ -85,6 +105,9 @@ public class RobotContainer {
     }
   }
 
+  /**
+   * Trigger to return true when down is pressed on manip dpad
+   */
   private class DPadDown extends Trigger {
     @Override
     public boolean get() {

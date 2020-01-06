@@ -13,8 +13,13 @@ import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 public class Winch extends SubsystemBase {
+  // Motor Controllers:
   private WPI_VictorSPX m_winch = new WPI_VictorSPX(Constants.kWinch);
 
+  /**
+   * Operates the climbing winch
+   * @param speed The speed at which to turn the winch
+   */
   public void runWinch(double speed) {
     m_winch.set(speed);
   }

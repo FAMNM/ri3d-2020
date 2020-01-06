@@ -13,8 +13,13 @@ import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 public class ClimbingArm extends SubsystemBase {
-  private WPI_VictorSPX m_armMotor = new WPI_VictorSPX(Constants.kArm);;
+  // Motor Controllers:
+  private WPI_VictorSPX m_armMotor = new WPI_VictorSPX(Constants.kArm);
 
+  /**
+   * Controls the climbing arm
+   * @param speed The speed at which to move the arm
+   */
   public void climb(double speed) {
     m_armMotor.set(speed);
   }

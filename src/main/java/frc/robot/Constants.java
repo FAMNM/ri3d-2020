@@ -9,20 +9,29 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    // Hardware Ports:
+    // -- Drivetrain:
     public static final int kLFDrive = 3;
     public static final int kRFDrive = 1;
     public static final int kLBDrive = 4;
     public static final int kRBDrive = 2;
 
+    // -- Intake:
     public static final int kIntake = 5;
     
+    // -- Shooter:
     public static final int kFlyWheel = 6;
 
+    // -- Climbing Arm:
     public static final int kArm = 7;
+
+    // -- Winch:
     public static final int kWinch = 8;
 
+    // -- Conveyor:
     public static final int kConveyor = 9;
 
+    // Constant Variables:
     public static final double kConveyorSpeed = 0.5;
     public static final double kFlywheelSpeed = 0.5;
 }
