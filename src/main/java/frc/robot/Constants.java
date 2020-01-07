@@ -31,10 +31,15 @@ public final class Constants {
     // -- Conveyor:
     public static final int kConveyor = 1;
 
+    // -- CPSpinner:
+    public static final int kSpinner = 0;
+
     // Constant Variables:
     public static final double kConveyorSpeed = 0.5;
-    public static final double kFlywheelSpeed = 0.5;
-    public static final double kWinchSpeed = 0.40;
+    public static final double kFlywheelSpeed = 0.45;
+    public static final double kWinchSpeed = 0.45;
     public static final double kArmSpeed = 0.7;
     public static final double kIntakeSpeed = 1.0;
+    public static final double kLeftDriveScaling = 1.0 / 1.3;
+    public static final double kRightDriveScaling = 1.0 / 1.4;
 }

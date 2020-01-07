@@ -30,6 +30,7 @@ public class RobotContainer {
   private final DriveTrain m_driveTrain = new DriveTrain();
   private final ClimbingArm m_climbArm = new ClimbingArm();
   private final Winch m_winch = new Winch();
+  private final CPSpinner m_spinner = new CPSpinner();
 
   // Controllers:
   private final XboxController m_driver = new XboxController(0);
@@ -42,13 +43,13 @@ public class RobotContainer {
     // Configure the button bindings:
     configureButtonBindings();
 
-    // Intake default command (Run intake):
+    // Intake default command (Stop intake):
     m_intake.setDefaultCommand(new RunCommand(() -> m_intake.intakeStop(), m_intake));
 
     // Drivetrain default command (Arcade drive):
     m_driveTrain.setDefaultCommand(new RunCommand(() -> m_driveTrain.arcadeDrive(
-      m_driver.getY(GenericHID.Hand.kLeft) / 1.3,
-      m_driver.getX(GenericHID.Hand.kRight) / 1.4),
+      m_driver.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling,
+      m_driver.getX(GenericHID.Hand.kRight) * Constants.kRightDriveScaling),
       m_driveTrain
     ));
 
@@ -69,6 +70,9 @@ public class RobotContainer {
 
     // Shooter default command (Stop shooter):
     m_shooter.setDefaultCommand(new RunCommand(() -> m_shooter.stop(), m_shooter));
+  
+    // CP Spinner default command (Stop spinner):
+    m_spinner.setDefaultCommand(new RunCommand(() -> m_spinner.stopCP(), m_spinner));
   }
 
   /**
@@ -93,7 +97,10 @@ public class RobotContainer {
     // Run intake outward (Manip LT):
     new ManipLeftTrigger()
       .whileActiveContinuous(new RunCommand(() -> m_intake.intakeOut(), m_intake));
-    }
+    // Activate CP Spinner (Manip Y):
+    new JoystickButton(m_manip, XboxController.Button.kY.value)
+      .whileHeld(new RunCommand(() -> m_spinner.spinCP(), m_spinner));
+  }
 
   /**
    * Sets the command to run during autonomous

@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,6 +25,9 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private UsbCamera m_cam0;
+  private UsbCamera m_cam1;
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -32,8 +37,13 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    
     // Start the Camera Server:
-    CameraServer.getInstance().startAutomaticCapture();
+    m_cam0 = CameraServer.getInstance().startAutomaticCapture(0);
+    m_cam1 = CameraServer.getInstance().startAutomaticCapture(1);
+    // Set camera properites:
+    m_cam0.setVideoMode(VideoMode.PixelFormat.kMJPEG, 640, 360, 10);
+    m_cam1.setVideoMode(VideoMode.PixelFormat.kMJPEG, 640, 360, 10);
   }
 
   /**
