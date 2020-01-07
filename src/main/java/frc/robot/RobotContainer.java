@@ -47,8 +47,8 @@ public class RobotContainer {
 
     // Drivetrain default command (Arcade drive):
     m_driveTrain.setDefaultCommand(new RunCommand(() -> m_driveTrain.arcadeDrive(
-      m_driver.getY(GenericHID.Hand.kLeft),
-      m_driver.getX(GenericHID.Hand.kRight) / 2.0),
+      m_driver.getY(GenericHID.Hand.kLeft) / 1.3,
+      m_driver.getX(GenericHID.Hand.kRight) / 1.4),
       m_driveTrain
     ));
 
