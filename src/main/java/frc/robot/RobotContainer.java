@@ -43,28 +43,24 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Intake default command (Run intake):
-    m_intake.setDefaultCommand(new RunCommand(() -> m_intake.runIntake(
-      m_manip.getTriggerAxis(GenericHID.Hand.kLeft),
-      m_manip.getTriggerAxis(GenericHID.Hand.kRight)),
-      m_intake
-    ));
+    m_intake.setDefaultCommand(new RunCommand(() -> m_intake.intakeStop(), m_intake));
 
     // Drivetrain default command (Arcade drive):
     m_driveTrain.setDefaultCommand(new RunCommand(() -> m_driveTrain.arcadeDrive(
       m_driver.getY(GenericHID.Hand.kLeft),
-      m_driver.getX(GenericHID.Hand.kLeft)),
+      m_driver.getX(GenericHID.Hand.kRight) / 2.0),
       m_driveTrain
     ));
 
     // Climbing arm default command (Run arm):
     m_climbArm.setDefaultCommand(new RunCommand(() -> m_climbArm.climb(
-      m_manip.getY(GenericHID.Hand.kLeft)),
+      -m_manip.getY(GenericHID.Hand.kLeft) * Constants.kArmSpeed),
       m_climbArm
     ));
 
     // Winch default command (Run winch):
     m_winch.setDefaultCommand(new RunCommand(() -> m_winch.runWinch(
-      m_manip.getY(GenericHID.Hand.kRight)),
+      -m_manip.getY(GenericHID.Hand.kRight) * Constants.kWinchSpeed),
       m_winch
     ));
 
@@ -85,13 +81,19 @@ public class RobotContainer {
     // Activate shooter (Manip A):
     new JoystickButton(m_manip, XboxController.Button.kA.value)
       .whileHeld(new RunCommand(() -> m_shooter.shoot(), m_shooter));
-    // Move conveyor up (Manip DPad Up):
-    new ManipDPadUp()
+    // Move conveyor up (Manip RB):
+    new JoystickButton(m_manip, XboxController.Button.kBumperRight.value)
       .whileActiveContinuous(new RunCommand(() -> m_conveyor.raiseConveyor(), m_conveyor));
-    // Move conveyor down (Manip DPad Down):
-    new ManipDPadDown()
+    // Move conveyor down (Manip RT):
+    new ManipRightTrigger()
       .whileActiveContinuous(new RunCommand(() -> m_conveyor.lowerConveyor(), m_conveyor));
-  }
+    // Run intake inward (Manip LB):
+    new JoystickButton(m_manip, XboxController.Button.kBumperLeft.value)
+      .whileHeld(new RunCommand(() -> m_intake.intakeIn(), m_intake));
+    // Run intake outward (Manip LT):
+    new ManipLeftTrigger()
+      .whileActiveContinuous(new RunCommand(() -> m_intake.intakeOut(), m_intake));
+    }
 
   /**
    * Sets the command to run during autonomous
@@ -104,22 +106,44 @@ public class RobotContainer {
   /**
    * Trigger to return true when up is pressed on manip dpad
    */
-  private class ManipDPadUp extends Trigger {
+  // private class ManipDPadUp extends Trigger {
+  //   @Override
+  //   public boolean get() {
+  //     int pov = m_manip.getPOV();
+  //     return pov == 315 || (pov <= 45 && pov >= 0);
+  //   }
+  // }
+
+  // /**
+  //  * Trigger to return true when down is pressed on manip dpad
+  //  */
+  // private class ManipDPadDown extends Trigger {
+  //   @Override
+  //   public boolean get() {
+  //     int pov = m_manip.getPOV();
+  //     return pov >= 135 && pov <= 225;
+  //   }
+  // }
+
+  /**
+   * Trigger to return true when the right trigger of the manip controller
+   * is pressed in 3/4 of the way or more 
+   */
+  private class ManipRightTrigger extends Trigger {
     @Override
     public boolean get() {
-      int pov = m_manip.getPOV();
-      return pov == 315 || (pov <= 45 && pov >= 0);
+      return m_manip.getTriggerAxis(GenericHID.Hand.kRight) >= 0.75;
     }
   }
 
   /**
-   * Trigger to return true when down is pressed on manip dpad
+   * Trigger to return true when the left trigger of the manip controller
+   * is pressed in 3/4 of the way or more 
    */
-  private class ManipDPadDown extends Trigger {
+  private class ManipLeftTrigger extends Trigger {
     @Override
     public boolean get() {
-      int pov = m_manip.getPOV();
-      return pov >= 135 && pov <= 225;
+      return m_manip.getTriggerAxis(GenericHID.Hand.kLeft) >= 0.75;
     }
   }
 }

@@ -20,14 +20,14 @@ public class Conveyor extends SubsystemBase {
    * Runs conveyor up
    */
   public void raiseConveyor() {
-    m_conveyor.set(Constants.kConveyorSpeed);
+    m_conveyor.set(-Constants.kConveyorSpeed);
   }
 
   /**
    * Runs conveyor down
    */
   public void lowerConveyor() {
-    m_conveyor.set(-Constants.kConveyorSpeed);
+    m_conveyor.set(Constants.kConveyorSpeed);
   }
 
   /**

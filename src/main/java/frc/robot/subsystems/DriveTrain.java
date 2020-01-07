@@ -37,7 +37,7 @@ public class DriveTrain extends SubsystemBase {
    * @param turn The speed to turn the robot
    */
   public void arcadeDrive(double move, double turn) {
-    m_driveTrain.arcadeDrive(move * direction, turn);
+    m_driveTrain.arcadeDrive(move * direction, turn, true);
   }
 
   /**

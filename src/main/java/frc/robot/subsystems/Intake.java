@@ -17,11 +17,23 @@ public class Intake extends SubsystemBase {
   private final WPI_VictorSPX m_intake = new WPI_VictorSPX(Constants.kIntake);
 
   /**
-   * Runs the intake motor
-   * @param left Value of left trigger
-   * @param right Value of right trigger
+   * Runs the intake motor inward
    */
-  public void runIntake(double left, double right) {
-    m_intake.set(right - left);
+  public void intakeIn() {
+    m_intake.set(-Constants.kIntakeSpeed);
+  }
+
+  /**
+   * Runs the intake motor outward
+   */
+  public void intakeOut() {
+    m_intake.set(Constants.kIntakeSpeed);
+  }
+
+  /**
+   * Stops the intake motor
+   */
+  public void intakeStop() {
+    m_intake.stopMotor();
   }
 }

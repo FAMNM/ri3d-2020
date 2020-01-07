@@ -17,13 +17,13 @@ public final class Constants {
     public static final int kRBDrive = 6;
 
     // -- Intake:
-    public static final int kIntake = 3;
+    public static final int kIntake = 5;
     
     // -- Shooter:
     public static final int kFlyWheel = 2;
 
     // -- Climbing Arm:
-    public static final int kArm = 5;
+    public static final int kArm = 3;
 
     // -- Winch:
     public static final int kWinch = 4;
@@ -34,4 +34,7 @@ public final class Constants {
     // Constant Variables:
     public static final double kConveyorSpeed = 0.5;
     public static final double kFlywheelSpeed = 0.5;
+    public static final double kWinchSpeed = 0.40;
+    public static final double kArmSpeed = 0.7;
+    public static final double kIntakeSpeed = 1.0;
 }
