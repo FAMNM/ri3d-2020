@@ -41,6 +41,13 @@ public class DriveTrain extends SubsystemBase {
   }
 
   /**
+   * Stops the motors of the drive train
+   */
+  public void stopMotors() {
+    m_driveTrain.stopMotor();
+  }
+
+  /**
    * Reverses the forward direction of the robot
    */
   public void changeDirection() {

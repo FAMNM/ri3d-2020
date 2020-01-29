@@ -42,4 +42,11 @@ public final class Constants {
     public static final double kIntakeSpeed = 1.0;
     public static final double kLeftDriveScaling = 1.0 / 1.3;
     public static final double kRightDriveScaling = 1.0 / 1.4;
+
+    //Autonomous:
+    public final class Autonomous {
+        public static final double kStartDelay = 0.0;
+        public static final double kForwardTime = 3; //1 sec is about 2.5 ft (min 4 sec)
+        public static final double kAutoSpeed = 0.6;
+    }
 }

@@ -12,7 +12,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -107,7 +112,30 @@ public class RobotContainer {
    * @return The autonomous command
    */
   public Command getAutonomousCommand() {
-    return null;
+    // return new SequentialCommandGroup(
+    //   new RunCommand(() -> m_driveTrain.arcadeDrive(-Constants.Autonomous.kAutoSpeed, 0), m_driveTrain).withTimeout(1),
+    //   new RunCommand(() -> m_driveTrain.arcadeDrive(Constants.Autonomous.kAutoSpeed, 0), m_driveTrain).withTimeout(0.1),
+    //   new InstantCommand(() -> m_driveTrain.stopMotors(), m_driveTrain)
+    // );
+    return new SequentialCommandGroup(
+      new WaitCommand(Constants.Autonomous.kStartDelay),
+      new RunCommand(() -> m_driveTrain.arcadeDrive(-Constants.Autonomous.kAutoSpeed, 0.1), m_driveTrain).withTimeout(Constants.Autonomous.kForwardTime),
+      new InstantCommand(() -> m_driveTrain.stopMotors(), m_driveTrain),
+      new ParallelCommandGroup(
+        new RunCommand(() -> m_shooter.shoot(), m_shooter),
+        new SequentialCommandGroup(
+          new WaitCommand(1),
+          new RunCommand(() -> m_conveyor.raiseConveyor(), m_conveyor)
+        )
+      ).withTimeout(3),
+      new ParallelCommandGroup(
+        new InstantCommand(() -> m_shooter.stop(), m_shooter),
+        new InstantCommand(() -> m_conveyor.stopConveyor(), m_conveyor),
+        new RunCommand(() -> m_driveTrain.arcadeDrive(Constants.Autonomous.kAutoSpeed, 0.1), m_driveTrain).withTimeout(2.5)
+      ),
+      new RunCommand(() -> m_driveTrain.arcadeDrive(0, 0.6), m_driveTrain).withTimeout(1),
+      new InstantCommand(() -> m_driveTrain.stopMotors(), m_driveTrain)
+    ).withTimeout(15);
   }
 
   /**
