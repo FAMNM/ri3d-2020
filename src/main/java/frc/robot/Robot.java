@@ -26,7 +26,7 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
   private UsbCamera m_cam0;
-  private UsbCamera m_cam1;
+  // private UsbCamera m_cam1;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -40,10 +40,10 @@ public class Robot extends TimedRobot {
     
     // Start the Camera Server:
     m_cam0 = CameraServer.getInstance().startAutomaticCapture(0);
-    m_cam1 = CameraServer.getInstance().startAutomaticCapture(1);
+    // m_cam1 = CameraServer.getInstance().startAutomaticCapture(1);
     // Set camera properites:
-    m_cam0.setVideoMode(VideoMode.PixelFormat.kMJPEG, 640, 360, 10);
-    m_cam1.setVideoMode(VideoMode.PixelFormat.kMJPEG, 640, 360, 10);
+    m_cam0.setVideoMode(VideoMode.PixelFormat.kMJPEG, 480, 270, 15);
+    // m_cam1.setVideoMode(VideoMode.PixelFormat.kMJPEG, 1920, 1080, 30);
   }
 
   /**

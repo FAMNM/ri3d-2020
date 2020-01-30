@@ -37,7 +37,7 @@ public final class Constants {
     // Constant Variables:
     public static final double kConveyorSpeed = 0.5;
     public static final double kFlywheelSpeed = 0.45;
-    public static final double kWinchSpeed = 0.45;
+    public static final double kWinchSpeed = 0.65;
     public static final double kArmSpeed = 0.7;
     public static final double kIntakeSpeed = 1.0;
     public static final double kLeftDriveScaling = 1.0 / 1.3;
@@ -46,7 +46,7 @@ public final class Constants {
     //Autonomous:
     public final class Autonomous {
         public static final double kStartDelay = 0.0;
-        public static final double kForwardTime = 3; //1 sec is about 2.5 ft (min 4 sec)
+        public static final double kForwardTime = 3; //1 sec is about 3.5 ft (min 3 sec)
         public static final double kAutoSpeed = 0.6;
     }
 }

@@ -13,11 +13,9 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -85,25 +83,31 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Change forward direction (Drive Y):
-    new JoystickButton(m_driver, XboxController.Button.kY.value)
-      .whenPressed(new InstantCommand(m_driveTrain::changeDirection, m_driveTrain));
+    // new JoystickButton(m_driver, XboxController.Button.kY.value)
+    //   .whenPressed(new InstantCommand(m_driveTrain::changeDirection, m_driveTrain));
     // Activate shooter (Manip A):
     new JoystickButton(m_manip, XboxController.Button.kA.value)
       .whileHeld(new RunCommand(() -> m_shooter.shoot(), m_shooter));
+    // Spin shooter backwards (Manip Y):
+    new JoystickButton(m_manip, XboxController.Button.kY.value)
+      .whileHeld(new RunCommand(() -> m_shooter.reverse(), m_shooter));
     // Move conveyor up (Manip RB):
     new JoystickButton(m_manip, XboxController.Button.kBumperRight.value)
       .whileActiveContinuous(new RunCommand(() -> m_conveyor.raiseConveyor(), m_conveyor));
     // Move conveyor down (Manip RT):
     new ManipRightTrigger()
-      .whileActiveContinuous(new RunCommand(() -> m_conveyor.lowerConveyor(), m_conveyor));
+      .whileActiveContinuous(new ParallelCommandGroup(
+        new RunCommand(() -> m_conveyor.lowerConveyor(), m_conveyor),
+        new RunCommand(() -> m_shooter.reverse(), m_shooter)
+      ));
     // Run intake inward (Manip LB):
     new JoystickButton(m_manip, XboxController.Button.kBumperLeft.value)
       .whileHeld(new RunCommand(() -> m_intake.intakeIn(), m_intake));
     // Run intake outward (Manip LT):
     new ManipLeftTrigger()
       .whileActiveContinuous(new RunCommand(() -> m_intake.intakeOut(), m_intake));
-    // Activate CP Spinner (Manip Y):
-    new JoystickButton(m_manip, XboxController.Button.kY.value)
+    // Activate CP Spinner (Manip X):
+    new JoystickButton(m_manip, XboxController.Button.kX.value)
       .whileHeld(new RunCommand(() -> m_spinner.spinCP(), m_spinner));
   }
 

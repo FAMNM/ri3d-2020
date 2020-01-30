@@ -15,27 +15,6 @@ public class Shooter extends SubsystemBase {
     // Motor Controllers: 
     private WPI_VictorSPX m_flywheel = new WPI_VictorSPX(Constants.kFlyWheel);
 
-    // Shuffleboard:
-    // private ShuffleboardTab flywheelSpeedTab;
-    // private NetworkTableEntry flywheelSpeedEntry;
-    // private NetworkTableEntry currentFlywheelSpeedEntry;
-
-    // Local Variables:
-    // public double kFlywheelSpeed = 0.5;
-
-    /**
-     * Creates a new instance of this subsystem
-     */
-    // public Shooter() {
-    //     // Add a shooter tab to the Shuffleboard:
-    //     flywheelSpeedTab = Shuffleboard.getTab("Shooter");
-    //     // Add a slider to adjust the speed of the shooter:
-    //     flywheelSpeedEntry = flywheelSpeedTab.add("Speed", 0).withWidget(BuiltInWidgets.kNumberSlider)
-    //             .withProperties(Map.of("min", -1, "max", 1)).getEntry();
-    //     // Add a space to display the flywheel's current speed setting:
-    //     currentFlywheelSpeedEntry = flywheelSpeedTab.add("Flywheel speed", kFlywheelSpeed).getEntry();
-    // }
-
     /**
      * Spins the flywheel
      */
@@ -44,12 +23,11 @@ public class Shooter extends SubsystemBase {
     }
 
     /**
-     * Sets the speed of the flywheel
-     * @param flywheelSpeed The new speed for the flywheel
+     * Spins the flywheel in reverse (for unlodging cells)
      */
-    // public void setflywheelSpeed(double flywheelSpeed) {
-    //     this.kFlywheelSpeed = flywheelSpeed;
-    // }
+    public void reverse() {
+        m_flywheel.set(-0.1);
+    }
 
     /**
      * Stops the flywheel
@@ -57,16 +35,4 @@ public class Shooter extends SubsystemBase {
     public void stop() {
         m_flywheel.set(0);
     }
-
-    /**
-     * Runs continuously
-     */
-    // @Override
-    // public void periodic() {
-    //     // Update the flywheel speed using the speed slider in Shuffleboard:
-    //     kFlywheelSpeed = flywheelSpeedEntry.getDouble(0.5);
-
-    //     // Display the current speed of the flywheel in Shuffleboard:
-    //     currentFlywheelSpeedEntry.setDouble(kFlywheelSpeed);
-    // }
 }
