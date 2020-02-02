@@ -13,6 +13,7 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -51,20 +52,23 @@ public class RobotContainer {
 
     // Drivetrain default command (Arcade drive):
     m_driveTrain.setDefaultCommand(new RunCommand(() -> m_driveTrain.arcadeDrive(
-      m_driver.getY(GenericHID.Hand.kLeft) * Constants.kLeftDriveScaling,
-      m_driver.getX(GenericHID.Hand.kRight) * Constants.kRightDriveScaling),
+        -m_driver.getY(GenericHID.Hand.kLeft),
+        m_driver.getX(GenericHID.Hand.kRight)
+      ),
       m_driveTrain
     ));
 
     // Climbing arm default command (Run arm):
     m_climbArm.setDefaultCommand(new RunCommand(() -> m_climbArm.climb(
-      -m_manip.getY(GenericHID.Hand.kLeft) * Constants.kArmSpeed),
+        -m_manip.getY(GenericHID.Hand.kLeft) * Constants.kArmSpeed
+      ),
       m_climbArm
     ));
 
     // Winch default command (Run winch):
     m_winch.setDefaultCommand(new RunCommand(() -> m_winch.runWinch(
-      -m_manip.getY(GenericHID.Hand.kRight) * Constants.kWinchSpeed),
+        -m_manip.getY(GenericHID.Hand.kRight) * Constants.kWinchSpeed
+      ),
       m_winch
     ));
 
@@ -109,7 +113,14 @@ public class RobotContainer {
     // Activate CP Spinner (Manip X):
     new JoystickButton(m_manip, XboxController.Button.kX.value)
       .whileHeld(new RunCommand(() -> m_spinner.spinCP(), m_spinner));
-  }
+    // Toggle full drive speed (Driver LB & RB):
+    new JoystickButton(m_driver, XboxController.Button.kBumperLeft.value)
+      .whenPressed(new InstantCommand(() -> m_driveTrain.toggleSpeed()))
+      .whenReleased(new InstantCommand(() -> m_driveTrain.toggleSpeed()));
+    new JoystickButton(m_driver, XboxController.Button.kBumperRight.value)
+    .whenPressed(new InstantCommand(() -> m_driveTrain.toggleSpeed()))
+    .whenReleased(new InstantCommand(() -> m_driveTrain.toggleSpeed()));
+    }
 
   /**
    * Sets the command to run during autonomous
@@ -123,7 +134,7 @@ public class RobotContainer {
     // );
     return new SequentialCommandGroup(
       new WaitCommand(Constants.Autonomous.kStartDelay),
-      new RunCommand(() -> m_driveTrain.arcadeDrive(-Constants.Autonomous.kAutoSpeed, 0.1), m_driveTrain).withTimeout(Constants.Autonomous.kForwardTime),
+      new RunCommand(() -> m_driveTrain.autoDrive(-Constants.Autonomous.kAutoSpeed, 0.1), m_driveTrain).withTimeout(Constants.Autonomous.kForwardTime),
       new InstantCommand(() -> m_driveTrain.stopMotors(), m_driveTrain),
       new ParallelCommandGroup(
         new RunCommand(() -> m_shooter.shoot(), m_shooter),
@@ -135,9 +146,9 @@ public class RobotContainer {
       new ParallelCommandGroup(
         new InstantCommand(() -> m_shooter.stop(), m_shooter),
         new InstantCommand(() -> m_conveyor.stopConveyor(), m_conveyor),
-        new RunCommand(() -> m_driveTrain.arcadeDrive(Constants.Autonomous.kAutoSpeed, 0.1), m_driveTrain).withTimeout(2.5)
+        new RunCommand(() -> m_driveTrain.autoDrive(Constants.Autonomous.kAutoSpeed, 0.1), m_driveTrain).withTimeout(2.5)
       ),
-      new RunCommand(() -> m_driveTrain.arcadeDrive(0, 0.6), m_driveTrain).withTimeout(1),
+      //new RunCommand(() -> m_driveTrain.autoDrive(0, 0.6), m_driveTrain).withTimeout(1),
       new InstantCommand(() -> m_driveTrain.stopMotors(), m_driveTrain)
     ).withTimeout(15);
   }

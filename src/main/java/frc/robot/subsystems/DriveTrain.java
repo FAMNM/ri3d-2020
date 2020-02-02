@@ -29,7 +29,7 @@ public class DriveTrain extends SubsystemBase {
   private DifferentialDrive m_driveTrain = new DifferentialDrive(m_left, m_right);
 
   //Local variables:
-  private int direction = -1;
+  private boolean fullSpeed = false;
 
   /**
    * Runs arcade drive on this drivetrain
@@ -37,7 +37,20 @@ public class DriveTrain extends SubsystemBase {
    * @param turn The speed to turn the robot
    */
   public void arcadeDrive(double move, double turn) {
-    m_driveTrain.arcadeDrive(move * direction, turn, true);
+    m_driveTrain.arcadeDrive(
+      fullSpeed ? move : move * Constants.kLeftDriveScaling,
+      fullSpeed ? turn : turn * Constants.kRightDriveScaling,
+      true
+    );
+  }
+
+  /**
+   * Runs the robot using set values
+   * @param move The speed at which to drive
+   * @param turn The speed at which to turn
+   */
+  public void autoDrive(double move, double turn) {
+    m_driveTrain.arcadeDrive(-move, turn, true);
   }
 
   /**
@@ -48,9 +61,9 @@ public class DriveTrain extends SubsystemBase {
   }
 
   /**
-   * Reverses the forward direction of the robot
+   * Toggle full robot speed
    */
-  public void changeDirection() {
-    direction *= -1;
+  public void toggleSpeed() {
+    fullSpeed = !fullSpeed;
   }
 }
